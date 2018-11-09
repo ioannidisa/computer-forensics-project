@@ -9,13 +9,12 @@
 # include error and status messages 
 # create a directory to put reports in if not already existent 
 # restore points? get creation date and how many days ago that was from curr date
-# count number of processes with null hash
 
 Write-Output "Beginning reporting process..."
 
 # ISO Compliant 
 $titleDate=Get-Date -format yyyy-MM-dd
-$text = $titleDate + '_Report'
+$text = $titleDate + '_Report.txt'
 New-Item -Path "C:\Desktop" -Name $text -ItemType "file" 
 
 # Gets the current date (DayofWeek, Month Day, Year)
@@ -65,7 +64,7 @@ $restorePoints=Get-ComputerRestorePoint | Format-Table SequenceNumber, @{Label="
 
 # USER LOG ONS
 # get username, session, id, logon time
-#query user
+# query user
 
 
 # REGISTRY KEYS
