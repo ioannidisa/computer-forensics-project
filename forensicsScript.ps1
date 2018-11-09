@@ -6,7 +6,10 @@
 #
 ##############################
 
-$text = 'Report'
+
+# ISO Compliant 
+$titleDate=Get-Date -format yyyy-MM-dd
+$text = $titleDate + '_Report'
 
 # Gets the current date (DayofWeek, Month Day, Year)
 $date=Get-Date -DisplayHint Date
@@ -45,10 +48,5 @@ foreach ($element in $processArray) {
 
 #FILES
 
-
-
-# Create the file
-$text | Out-File 'report.txt'
-
 # Append to file
-$text | Out-File 'report.txt' -Append
+$text | Out-File "report.txt" -Append
