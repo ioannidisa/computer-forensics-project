@@ -1,4 +1,4 @@
-# Computer Forensics Project
+# Windows Forensic Artifact Collector
 Scripts by: Alexandra Ioannidis, Jathan Anandham
 
 
