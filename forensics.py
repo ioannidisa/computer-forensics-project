@@ -36,4 +36,19 @@ os.system("$time | Out-File "C:\Windows Artifact Reports\$text" -Append")
 os.system("Write-Output "Beginning Current Processes Section..."")
 
 # PROCESSES
-os.system()
+os.system("$processArray=Get-Process | Select-Object -Property ProcessName")
+os.system("$processPath=Get-Process | Select-Object -Property Path")
+os.system("$procCount= "Number of current processes: " + $processArray.Count")
+os.system("")
+
+os.system("$startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name")
+os.system("$autoCount = "Number of Start-Up Processes: " + $startup.Count")
+
+# SERVICES
+os.system("$running = Get-Service | where {$_.status -eq 'running'}")
+os.system("$runCount = "Number of Running Services: " + $running.Count")
+os.system("$stopped = Get-Service | where {$_.status -eq 'stopped'}")
+os.system("$stopCount = "Number of Stopped Services: " + $stopped.Count")
+
+
+
