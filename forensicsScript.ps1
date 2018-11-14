@@ -31,6 +31,9 @@
 
 # ACTUAL sCIRPT
 
+Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $null }
+
 Write-Output "Beginning reporting process..."
 
 # GENERAL INFORMATION
@@ -78,5 +81,5 @@ $stopped = Get-Service | where {$_.status -eq 'stopped'}
 $stopCount = "Number of Stopped Services: " + $stopped.Count
 $stopCount | Out-File "C:\Windows Artifact Reports\$text" -Append
 
-
+Write-Output "Reporting Process Finished..."
 
