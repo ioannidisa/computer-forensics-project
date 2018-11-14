@@ -6,30 +6,8 @@
 #
 ##############################
 
-# include error and status messages 
 # put in current user Desktop folder
-
-#PROCESSES
-
-# Get hash for all current processes
-#$nullCount = 0
-#[System.Collections.ArrayList]$processhash=@()
-#foreach($proc in $processArray){
-#	try{
-#		$hash = Get-FileHash $proc.path -Algorithm MD5 -ErrorAction continue
-#		$processhash.Add($hash)
-#	}
-#	catch{
-#		$processhash.Add("NULL")
-#		$nullCount = $nullCount + 1
-#	}
-#}
-
-#$table=@(@{Process=$processArray; Path=$processPath; Hash=$processhash})
-#$table.ForEach({[PSCustomObject]$_}) | Format-Table
-
-
-# ACTUAL sCIRPT
+# make sure to create section titles in report (ex. YARA, General Process Information)
 
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $null }
@@ -65,6 +43,7 @@ Write-Output "Beginning Processes Section..."
 $processArray=Get-Process | Select-Object -Property ProcessName
 $processPath=Get-Process | Select-Object -Property Path
 $procCount= "Number of current processes: " + $processArray.Count
+$processArray=Get-Process | Select-Object -Property ProcessName, Path
 $procCount | Out-File "C:\Windows Artifact Reports\$text" -Append
 
 $startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name
