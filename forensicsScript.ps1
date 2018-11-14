@@ -7,33 +7,9 @@
 ##############################
 
 # include error and status messages 
-# create a directory to put reports in if not already existent 
-# restore points? get creation date and how many days ago that was from curr date
-
-Write-Output "Beginning reporting process..."
-
-# ISO Compliant 
-$titleDate=Get-Date -format yyyy-MM-dd
-$text = $titleDate + '_Report.txt'
-New-Item -Path "C:\Desktop" -Name $text -ItemType "file" 
-
-# Gets the current date (DayofWeek, Month Day, Year)
-$date=Get-Date -DisplayHint Date
-
-# Gets current time of machine and converts it to UTC
-$time=Get-Date -DisplayHint time
-$time.ToUniversalTime()
-
-# Computer name 
-$compName=$env:computername
-
-Write-Output "Beginning Current Processes Section..."
+# put in current user Desktop folder
 
 #PROCESSES
-
-# Get List of Current Processes
-$processArray=Get-Process | Select-Object -Property ProcessName
-$processPath=Get-Process | Select-Object -Property Path
 
 # Get hash for all current processes
 $nullCount = 0
@@ -52,27 +28,55 @@ foreach($proc in $processArray){
 $table=@(@{Process=$processArray; Path=$processPath; Hash=$processhash})
 $table.ForEach({[PSCustomObject]$_}) | Format-Table
 
-# need to compare to known good hashes, display outliers in a table??
 
-# Display count of current processes and count of null hash processes
-$procCount=$processArray.Count
-#$nullCount
+# ACTUAL sCIRPT
+
+Write-Output "Beginning reporting process..."
+
+# GENERAL INFORMATION
+
+# Get current date (ISO Compliant) for report title 
+$titleDate=Get-Date -format yyyy_MM_dd
+$text = $titleDate + '_Report.txt'
+
+# Create a reports directory for report files if non existent
+$path = "C:\Windows Artifact Reports"
+if(!(test-path $path)){ New-Item -ItemType Directory -Force -Path $path}
+New-Item -Path "C:\" -Name $text -ItemType "file" 
+
+$title="WINDOWS ARTIFACTS REPORT"
+$title | Out-File "C:\Windows Artifact Reports\$text" -Append
+
+# Get current date/time for report
+$time=Get-Date
+$time.ToUniversalTime()
+$time | Out-File "C:\Windows Artifact Reports\$text" -Append
+
+# Get name of machine
+$compName=$env:computername
+$compName | Out-File "C:\Windows Artifact Reports\$text" -Append
+
+Write-Output "Beginning Processes Section..."
+
+# PROCESSES
+$processArray=Get-Process | Select-Object -Property ProcessName
+$processPath=Get-Process | Select-Object -Property Path
+$procCount= "Number of current processes: " + $processArray.Count
+$procCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+
+$startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name
+$autoCount = "Number of Start-Up Processes: " + $startup.Count
+$startup | Out-File "C:\Windows Artifact Reports\$text" -Append
+$autoCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+
+# SERVICES
+$running = Get-Service | where {$_.status -eq 'running'}
+$runCount = "Number of Running Services: " + $running.Count
+$running | Out-File "C:\Windows Artifact Reports\$text" -Append
+$runCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+$stopped = Get-Service | where {$_.status -eq 'stopped'}
+$stopCount = "Number of Stopped Services: " + $stopped.Count
+$stopCount | Out-File "C:\Windows Artifact Reports\$text" -Append
 
 
-# RESTORE POINTS
-$restorePoints=Get-ComputerRestorePoint | Format-Table SequenceNumber, @{Label="Date"; Expression={$_.ConvertToDateTime($_.CreationTime)}}, Description -Auto
 
-# USER LOG ONS
-# get username, session, id, logon time
-# query user
-
-
-# REGISTRY KEYS
-
-# FILE SYSTEM
-
-
-# Append to file
-$text | Out-File "report.txt" -Append
-
-Write-Output "Reporting Process Finished..."
