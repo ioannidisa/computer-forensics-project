@@ -12,21 +12,21 @@
 #PROCESSES
 
 # Get hash for all current processes
-$nullCount = 0
-[System.Collections.ArrayList]$processhash=@()
-foreach($proc in $processArray){
-	try{
-		$hash = Get-FileHash $proc.path -Algorithm MD5 -ErrorAction continue
-		$processhash.Add($hash)
-	}
-	catch{
-		$processhash.Add("NULL")
-		$nullCount = $nullCount + 1
-	}
-}
+#$nullCount = 0
+#[System.Collections.ArrayList]$processhash=@()
+#foreach($proc in $processArray){
+#	try{
+#		$hash = Get-FileHash $proc.path -Algorithm MD5 -ErrorAction continue
+#		$processhash.Add($hash)
+#	}
+#	catch{
+#		$processhash.Add("NULL")
+#		$nullCount = $nullCount + 1
+#	}
+#}
 
-$table=@(@{Process=$processArray; Path=$processPath; Hash=$processhash})
-$table.ForEach({[PSCustomObject]$_}) | Format-Table
+#$table=@(@{Process=$processArray; Path=$processPath; Hash=$processhash})
+#$table.ForEach({[PSCustomObject]$_}) | Format-Table
 
 
 # ACTUAL sCIRPT
