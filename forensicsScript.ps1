@@ -42,19 +42,23 @@ $yarasection | Out-File "$path\$text" -Append
 
 # User specifies the directory they want??
 #$yarachoice=Read-Host -Prompt "Do you want to specify a specific directory for Yara to search through? (Y for Yes, N for No): "
+#$pathchildCount=0
 #if($yarachoice -eq 'y' -OR $yarachoice -eq 'Y'){
 #   $yarapath=Read-Host -Prompt "Enter the Full Path of the directory you want to search: "
 #   Get-ChildItem -Recurse -filter *.exe $yarapath 2> $null |
-#   ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+#   ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $pathchildCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+    #$yarapathCount="Number of files scanned for " + $yarapath + " directory: " + $pathchildCount.Count
+    #$yarapathCount | Out-File "$path\$text" -Append
 #}
 
 $childCount=0
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
 
-$yarafileCount="Number of files scanned: " + $childCount.Count
+$yarafileCount="Number of files scanned for C:\ directory: " + $childCount.Count
 $yarafileCount | Out-File "$path\$text" -Append
 
+# run YARA on current processes
 #$processPath=Get-Process | Select-Object -Property Path
 #Get-ChildItem -Recurse -filter *.exe $processPath 2> $null |
 #ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
