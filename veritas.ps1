@@ -1,5 +1,5 @@
 ##############################
-# POWERSHELL SCRIPT
+# POWERSHELL SCRIPT - VERITAS
 #
 # CSEC-464
 # Computer Forensics Project
