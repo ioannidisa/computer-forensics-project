@@ -5,7 +5,7 @@ Scripts by: Alexandra Ioannidis, Jathan Anandham
 
 
 # Functionality
-We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system. Our tool creates a txt report that displays the date, time,
+We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system. Our tool creates a .txt report that displays the date, time, computer name, process and service information, as well as a YARA analysis of different directories. 
 
 # Prerequisites
 Powershell must be run as an Admin. 
