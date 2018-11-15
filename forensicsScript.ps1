@@ -6,11 +6,7 @@
 #
 ##############################
 
-# put in current user Desktop folder
 # make sure to create section titles in report (ex. YARA, General Process Information)
-
-Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
-ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $null }
 
 Write-Output "Beginning reporting process..."
 
@@ -20,22 +16,33 @@ Write-Output "Beginning reporting process..."
 $titleDate=Get-Date -format yyyy_MM_dd
 $text = $titleDate + '_Report.txt'
 
+# Get current user's Desktop path
+$desktopPath=[Environment]::GetFolderPath("Desktop")
+
 # Create a reports directory for report files if non existent
-$path = "C:\Windows Artifact Reports"
+$path = $desktopPath + '\Windows Artifact Reports'
 if(!(test-path $path)){ New-Item -ItemType Directory -Force -Path $path}
-New-Item -Path "C:\" -Name $text -ItemType "file" 
+New-Item -Path $path -Name $text -ItemType "file" 
 
 $title="WINDOWS ARTIFACTS REPORT"
-$title | Out-File "C:\Windows Artifact Reports\$text" -Append
+$title | Out-File "$path\$text" -Append
 
 # Get current date/time for report
 $time=Get-Date
 $time.ToUniversalTime()
-$time | Out-File "C:\Windows Artifact Reports\$text" -Append
+$time | Out-File "$path\$text" -Append
 
 # Get name of machine
 $compName=$env:computername
-$compName | Out-File "C:\Windows Artifact Reports\$text" -Append
+$compName | Out-File "$path\$text" -Append
+
+Write-Output "Beginning YARA analysis..."
+$yarasection="YARA"
+$yarasection | Out-File "$path\$text" -Append
+
+# Display the count of anomalies that YARA found in Report and the number of files it scanned?
+Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
 
 Write-Output "Beginning Processes Section..."
 
@@ -43,22 +50,22 @@ Write-Output "Beginning Processes Section..."
 $processArray=Get-Process | Select-Object -Property ProcessName
 $processPath=Get-Process | Select-Object -Property Path
 $procCount= "Number of current processes: " + $processArray.Count
-$processArray=Get-Process | Select-Object -Property ProcessName, Path
-$procCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+$processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
+$procCount | Out-File "$path\$text" -Append
 
 $startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name
 $autoCount = "Number of Start-Up Processes: " + $startup.Count
-$startup | Out-File "C:\Windows Artifact Reports\$text" -Append
-$autoCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+$startup | Out-File "$path\$text" -Append
+$autoCount | Out-File "$path\$text" -Append
 
 # SERVICES
 $running = Get-Service | where {$_.status -eq 'running'}
 $runCount = "Number of Running Services: " + $running.Count
-$running | Out-File "C:\Windows Artifact Reports\$text" -Append
-$runCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+$running | Out-File "$path\$text" -Append
+$runCount | Out-File "$path\$text" -Append
 $stopped = Get-Service | where {$_.status -eq 'stopped'}
 $stopCount = "Number of Stopped Services: " + $stopped.Count
-$stopCount | Out-File "C:\Windows Artifact Reports\$text" -Append
+$stopCount | Out-File "$path\$text" -Append
 
 Write-Output "Reporting Process Finished..."
 
