@@ -56,6 +56,38 @@ $processPath=Get-Process | Select-Object -Property Path
 $procCount= "Number of current processes: " + $processArray.Count
 $current="CURRENT PROCESSES:"
 $current | Out-File "$path\$text" -Append
+
+$nullCount=0
+foreach ($proc in get-process)
+    {
+    try
+        {
+        $hashtable= Get-FileHash $proc.path -Algorithm SHA1 -ErrorAction stop
+        }
+    catch
+        {
+         #error handling... log contains names of processes where there was no path listed or we lack the rights
+         $nullCount+=1
+        }
+    }
+
+#foreach ( $row1 in $processArray ) {
+#  foreach ( $row2 in $hashtable ) {
+#    if ( $row1.ID -eq $row2.ID ) {
+  # BEGIN CALLOUT A
+#  $newtable= New-Object PSCustomObject -Property @{
+#    "ID" = $row1.ID
+#    "ProcessName" = $row1.ProcessName
+#    "SHA1 Hash" = $row2.Hash
+#    "Path" = $row1.Path
+#  } | Select-Object ID,ProcessName,Hash,Path
+  # END CALLOUT A
+#    }
+#  }
+#}
+
+
+
 $processArray | Out-File "$path\$text" -Append
 $procCount | Out-File "$path\$text" -Append
 
