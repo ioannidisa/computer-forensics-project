@@ -33,11 +33,11 @@ $time.ToUniversalTime()
 $time | Out-File "$path\$text" -Append
 
 # Get name of machine
-$compName=$env:computername
+$compName="Computer Name: " + $env:computername
 $compName | Out-File "$path\$text" -Append
 
 Write-Output "Beginning YARA analysis..."
-$yarasection="YARA"
+$yarasection="`nYARA: "
 $yarasection | Out-File "$path\$text" -Append
 
 # Display the count of anomalies that YARA found in Report and the number of files it scanned?
@@ -48,18 +48,20 @@ ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Na
 $yarafileCount="Number of files scanned: " + $childCount.Count
 $yarafileCount | Out-File "$path\$text" -Append
 
-
 Write-Output "Beginning Processes Section..."
 
 # PROCESSES
-$processArray=Get-Process | Select-Object -Property ProcessName
+$processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
 $processPath=Get-Process | Select-Object -Property Path
 $procCount= "Number of current processes: " + $processArray.Count
-$processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
+$current="CURRENT PROCESSES:"
+$current | Out-File "$path\$text" -Append
+$processArray | Out-File "$path\$text" -Append
 $procCount | Out-File "$path\$text" -Append
 
 $startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name
 $autoCount = "Number of Start-Up Processes: " + $startup.Count
+$start="STAR"
 $startup | Out-File "$path\$text" -Append
 $autoCount | Out-File "$path\$text" -Append
 
