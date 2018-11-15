@@ -1,9 +1,9 @@
-# Windows Forensic Artifact Collector
+# Windows YARA and Process Script
 Scripts by: Alexandra Ioannidis, Jathan Anandham
 
 
 # Functionality
-We have created a Powershell script that can provide various forensic artifacts that can be used in a forensic investigation or for finding anomalous activity within a Windows system.
+We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system.
 
 Need to run Powershell as an Admin
 
