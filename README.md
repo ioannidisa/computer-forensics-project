@@ -1,4 +1,6 @@
-# Windows YARA and Process Script
+# VERITAS
+Windows YARA and Process Script
+
 Scripts by: Alexandra Ioannidis, Jathan Anandham
 
 
