@@ -1,12 +1,13 @@
 ##############################
 # POWERSHELL SCRIPT
-# 
+#
+# CSEC-464
+# Computer Forensics Project
+#
 # Authors: Alexandra Ioannidis
 #	   Jathan Anandham
 #
 ##############################
-
-# make sure to create section titles in report (ex. YARA, General Process Information)
 
 Write-Output "Beginning reporting process..."
 
