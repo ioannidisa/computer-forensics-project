@@ -40,7 +40,14 @@ Write-Output "Beginning YARA analysis..."
 $yarasection="`nYARA: "
 $yarasection | Out-File "$path\$text" -Append
 
-# Display the count of anomalies that YARA found in Report and the number of files it scanned?
+# User specifies the directory they want??
+#$yarachoice=Read-Host -Prompt "Do you want to specify a specific directory for Yara to search through? (Y for Yes, N for No): "
+#if($yarachoice -eq 'y' -OR $yarachoice -eq 'Y'){
+#   $yarapath=Read-Host -Prompt "Enter the Full Path of the directory you want to search: "
+#   Get-ChildItem -Recurse -filter *.exe $yarapath 2> $null |
+#   ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+#}
+
 $childCount=0
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
@@ -48,11 +55,15 @@ ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Na
 $yarafileCount="Number of files scanned: " + $childCount.Count
 $yarafileCount | Out-File "$path\$text" -Append
 
+#$processPath=Get-Process | Select-Object -Property Path
+#Get-ChildItem -Recurse -filter *.exe $processPath 2> $null |
+#ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+
+
 Write-Output "Beginning Processes Section..."
 
 # PROCESSES
 $processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
-$processPath=Get-Process | Select-Object -Property Path
 $procCount= "Number of current processes: " + $processArray.Count
 $current="CURRENT PROCESSES:"
 $current | Out-File "$path\$text" -Append
@@ -85,8 +96,6 @@ foreach ($proc in get-process)
 #    }
 #  }
 #}
-
-
 
 $processArray | Out-File "$path\$text" -Append
 $procCount | Out-File "$path\$text" -Append
