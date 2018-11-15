@@ -76,8 +76,8 @@ $stopCount | Out-File "$path\$text" -Append
 
 Write-Output "Reporting Process Finished..."
 
-$emailChoice= Read-Host -Prompt "Do you want to send report as email attachment? (Enter Y for yes or N for No): "
-if ($emailChoice -eq 'Y' -OR $emailChoice -eq 'y'){
+$emailChoice= Read-Host -Prompt "Do you want to send report as email attachment? (Enter Y for Yes or N for No): "
+if ($emailChoice -eq 'Y' -OR $emailChoice -eq 'y' -OR $emailChoice -eq 'yes' -OR $emailChoice -eq 'Yes'){
      $userFrom=Read-Host -Prompt "Enter the email of the sender: "
      $userTo=Read-Host -Prompt "Enter the email of the receiver in: "
      Send-MailMessage -From "<$userFrom>" -To "<$userTo>" -Subject "Windows Artifact Report" -Body "Windows Artifact Report" -Attachments "$path\$text" -dno onSuccess, onFailure
