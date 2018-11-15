@@ -41,8 +41,13 @@ $yarasection="YARA"
 $yarasection | Out-File "$path\$text" -Append
 
 # Display the count of anomalies that YARA found in Report and the number of files it scanned?
+$childCount=0
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
-ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+
+$yarafileCount="Number of files scanned: " + $childCount.Count
+$yarafileCount | Out-File "$path\$text" -Append
+
 
 Write-Output "Beginning Processes Section..."
 
