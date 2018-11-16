@@ -51,9 +51,7 @@ $pathchildCount=0
 if($yarachoice -eq 'y' -OR $yarachoice -eq 'Y'){
    $yarapath=Read-Host -Prompt "Enter the Full Path of the directory you want to search "
    Get-ChildItem -Recurse -filter *.exe $yarapath 2> $null |
-   ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $pathchildCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
-   $yarapathCount="Number of files scanned for " + $yarapath + " directory: " + $pathchildCount
-   $yarapathCount | Out-File "$path\$text" -Append
+   ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $pathchildCount+=1; $userpath=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName  }
 }
 
 $childCount=0
@@ -80,6 +78,12 @@ $yaradllCount | Out-File "$path\$text" -Append
 
 $yarajpgCount="Number of files scanned for C:\ directory for .jpg files: " + $jpgCount
 $yarajpgCount | Out-File "$path\$text" -Append
+
+if($yarachoice -eq 'y' -OR $yarachoice -eq 'Y'){
+   $userpath | Out-File "$path\$text" -Append
+   $yarapathCount="Number of files scanned for " + $yarapath + " directory: " + $pathchildCount
+   $yarapathCount | Out-File "$path\$text" -Append
+}
 
 # run YARA on current processes
 $processPath=Get-Process | Select-Object -Property Path
