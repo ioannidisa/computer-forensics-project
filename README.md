@@ -1,11 +1,11 @@
 # VERITAS
-Windows YARA and Process Script
+Windows YARA Toolkit and Process Script
 
 Script by: Alexandra Ioannidis and Jathan Anandham
 
 
 # Functionality
-We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system. Our tool creates a .txt report that displays the date, time, computer name, process and service information, as well as a YARA analysis of different directories. 
+We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system. Our tool creates a .txt report that displays the date, time, computer name, process and service information, as well as a YARA Toolkit analysis of different directories. 
 
 With this script, the user is able to specify if they want the report to be emailed and also if they want the YARA rules to search a specific directory. 
 
