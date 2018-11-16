@@ -23,3 +23,7 @@ After downloading the binary, unzip the file and put the yara.exe and yarac.exe 
 # How to Use
 In order to use this script, you can download and save the script as well as save the .yar file to your box.  
 Once you have downloaded and saved the files, you can run the veritas.ps1 file in Powershell. Reports are saved to a folder called "Windows Artifact Reports" on the current users Desktop. 
+
+# Contact
+axi9993@g.rit.edu
+ja7185@g.rit.edu
