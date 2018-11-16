@@ -12,13 +12,13 @@ With this script, the user is able to specify if they want the report to be emai
 # Prerequisites
 Powershell must be run as an Admin. 
 
-Yara must be installed on the Windows machine. 
+Yara must be installed on the Windows machine. This script is configured for 64-bit operating systems and specifies the  yara64.exe file for use of YARA.
 
 Link to download YARA:
 https://www.dropbox.com/sh/umip8ndplytwzj1/AADdLRsrpJL1CM1vPVAxc5JZa?dl=0
 
 Based on the setup of your box, download the appropriate version of YARA. 
-After downloading the binary, unzip the file and put the yara.exe and yarac.exe anywhere on your box. 
+After downloading the binary, unzip the file and put the yara.exe and yarac.exe anywhere on your box.
 
 # How to Use
 In order to use this script, you can download and save the script as well as save the .yar file to your box.  
