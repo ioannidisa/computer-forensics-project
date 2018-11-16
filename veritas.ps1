@@ -10,6 +10,7 @@
 ##############################
 
 Write-Output "Beginning reporting process..."
+$separator="================================================================================="
 
 # GENERAL INFORMATION
 
@@ -84,19 +85,26 @@ Write-Output "Beginning Processes Section..."
 # PROCESSES
 $processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
 $procCount= "Number of current processes: " + $processArray.Count
+$separator | Out-File "$path\$text" -Append
 $current="`nCURRENT PROCESSES:"
 $current | Out-File "$path\$text" -Append
 
 $processArray | Out-File "$path\$text" -Append
 $procCount | Out-File "$path\$text" -Append
 
+$separator | Out-File "$path\$text" -Append
+
+$boot= "`nPROCESSES ON BOOT"
+$boot | Out-File "$path\$text" -Append
 $startup=Get-CimInstance win32_service -Filter "startmode = 'auto'" | Select-Object ProcessId, Name
 $autoCount = "Number of Start-Up Processes: " + $startup.Count
-$start="STAR"
 $startup | Out-File "$path\$text" -Append
 $autoCount | Out-File "$path\$text" -Append
 
 # SERVICES
+$separator | Out-File "$path\$text" -Append
+$servicestitle="`nSERVICES:"
+$servicestitle | Out-File "$path\$text" -Append
 $running = Get-Service | where {$_.status -eq 'running'}
 $runCount = "Number of Running Services: " + $running.Count
 $running | Out-File "$path\$text" -Append
