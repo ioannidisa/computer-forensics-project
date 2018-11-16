@@ -10,7 +10,7 @@
 ##############################
 
 Write-Output "Beginning reporting process..."
-$separator="================================================================================="
+$separator="`n================================================================================="
 
 # GENERAL INFORMATION
 
@@ -39,8 +39,11 @@ $compName="Computer Name: " + $env:computername
 $compName | Out-File "$path\$text" -Append
 
 Write-Output "Beginning YARA analysis..."
-$yarasection="`nYARA: "
+$separator | Out-File "$path\$text" -Append
+$yarasection="`n`nYARA: "
 $yarasection | Out-File "$path\$text" -Append
+$yaraanom="`nAnomalies Found: "
+$yaraanom | Out-File "$path\$text" -Append
 
 # User specifies the directory they want
 $yarachoice=Read-Host -Prompt "Do you want to specify a specific directory for Yara to search through? (Y for Yes, N for No) "
@@ -66,7 +69,7 @@ ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Na
 Get-ChildItem -Recurse -filter *.jpg C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $jpgCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
 
-$yarafileCount="Number of files scanned for C:\ directory for .exe files: " + $childCount
+$yarafileCount="`nNumber of files scanned for C:\ directory for .exe files: " + $childCount
 $yarafileCount | Out-File "$path\$text" -Append
 
 $yaradllCount="Number of files scanned for C:\ directory for .dll files: " + $dllCount
@@ -112,6 +115,8 @@ $runCount | Out-File "$path\$text" -Append
 $stopped = Get-Service | where {$_.status -eq 'stopped'}
 $stopCount = "Number of Stopped Services: " + $stopped.Count
 $stopCount | Out-File "$path\$text" -Append
+$end="`nEND OF REPORT"
+$end | Out-File "$path\$text" -Append
 
 Write-Output "Reporting Process Finished..."
 
