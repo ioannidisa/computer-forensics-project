@@ -25,6 +25,8 @@ In order to use this script, you can download and save the script as well as sav
 Once you have downloaded and saved the files, you can run the veritas.ps1 file in Powershell. Reports are saved to a folder called "Windows Artifact Reports" on the current users Desktop. 
 
 # Contact
+If you have any questions regarding this repository please contact us through email:
+
 axi9993@g.rit.edu
 
 ja7185@g.rit.edu
