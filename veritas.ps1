@@ -53,11 +53,26 @@ if($yarachoice -eq 'y' -OR $yarachoice -eq 'Y'){
 }
 
 $childCount=0
+$dllCount=0
+$jpgCount=0
+
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
 
-$yarafileCount="Number of files scanned for C:\ directory: " + $childCount
+Get-ChildItem -Recurse -filter *.dll C:\ 2> $null |
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $dllCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+
+Get-ChildItem -Recurse -filter *.jpg C:\ 2> $null |
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $jpgCount+=1; ./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+
+$yarafileCount="Number of files scanned for C:\ directory for .exe files: " + $childCount
 $yarafileCount | Out-File "$path\$text" -Append
+
+$yaradllCount="Number of files scanned for C:\ directory for .dll files: " + $dllCount
+$yaradllCount | Out-File "$path\$text" -Append
+
+$yarajpgCount="Number of files scanned for C:\ directory for .jpg files: " + $jpgCount
+$yarajpgCount | Out-File "$path\$text" -Append
 
 # run YARA on current processes
 $processPath=Get-Process | Select-Object -Property Path
