@@ -69,7 +69,7 @@ Write-Output "Beginning Processes Section..."
 # PROCESSES
 $processArray=Get-Process | Select-Object -Property Id, ProcessName, Path
 $procCount= "Number of current processes: " + $processArray.Count
-$current="CURRENT PROCESSES:"
+$current="`nCURRENT PROCESSES:"
 $current | Out-File "$path\$text" -Append
 
 $processArray | Out-File "$path\$text" -Append
