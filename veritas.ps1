@@ -10,7 +10,7 @@
 ##############################
 
 Write-Output "Beginning reporting process..."
-$separator="`n================================================================================="
+$separator="`n`n================================================================================="
 
 # GENERAL INFORMATION
 
@@ -61,18 +61,18 @@ $dllCount=0
 $jpgCount=0
 
 Get-ChildItem -Recurse -filter *.exe C:\ 2> $null |
-ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; $exe=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $childCount+=1; $exe=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName }
 $exe | Out-File "$path\$text" -Append
 
 Get-ChildItem -Recurse -filter *.dll C:\ 2> $null |
-ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $dllCount+=1; $dll=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $dllCount+=1; $dll=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName }
 $dll | Out-File "$path\$text" -Append
 
 Get-ChildItem -Recurse -filter *.jpg C:\ 2> $null |
-ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $jpgCount+=1; $jpg=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName 2> $path\$text }
+ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $jpgCount+=1; $jpg=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName }
 $jpg | Out-File "$path\$text" -Append
 
-$yarafileCount="`nNumber of files scanned for C:\ directory for .exe files: " + $childCount
+$yarafileCount="`n`nNumber of files scanned for C:\ directory for .exe files: " + $childCount
 $yarafileCount | Out-File "$path\$text" -Append
 
 $yaradllCount="Number of files scanned for C:\ directory for .dll files: " + $dllCount
