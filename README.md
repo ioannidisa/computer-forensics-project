@@ -26,4 +26,5 @@ Once you have downloaded and saved the files, you can run the veritas.ps1 file i
 
 # Contact
 axi9993@g.rit.edu
+
 ja7185@g.rit.edu
