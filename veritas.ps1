@@ -7,6 +7,9 @@
 # Authors: Alexandra Ioannidis
 #	   Jathan Anandham
 #
+# Script that utilizes YARA and PowerShell
+# to create a report on anomaly detection and 
+# process/service information
 ##############################
 
 Write-Output "Beginning reporting process..."
