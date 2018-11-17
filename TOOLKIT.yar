@@ -1,8 +1,3 @@
-/*TOOLKIT YARA rules colelcted from https://github.com/Yara-Rules/rules/blob/master/malware/ */
-
-
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Chinese_Hacktools.yar*/
-
 rule mswin_check_lm_group {
 	meta:
 		description = "Chinese Hacktool Set - file mswin_check_lm_group.exe"
@@ -2350,8 +2345,6 @@ rule kiwi_tools_gentil_kiwi {
 	condition:
 		uint16(0) == 0x5a4d and filesize < 1000KB and all of them
 }
-
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Dubrute.yar*/
 rule dubrute : bruteforcer toolkit
 {
     meta:
@@ -2371,51 +2364,13 @@ rule dubrute : bruteforcer toolkit
 
     condition:
         //check for MZ Signature at offset 0
-        uint16(0) == 0x5A4D 
+        uint16(0) == 0x5A4D
 
-        and 
+        and
 
         //check for dubrute specific strings
-        $a and $b and $c and $d and $e and $f 
+        $a and $b and $c and $d and $e and $f
 }
-
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Gen_powerkatz.yar*/
-/*
-    This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
-*/
-
-/*
-	Yara Rule Set
-	Author: Florian Roth
-	Date: 2016-02-05
-	Identifier: Powerkatz
-*/
-
-rule Powerkatz_DLL_Generic {
-	meta:
-		description = "Detects Powerkatz - a Mimikatz version prepared to run in memory via Powershell (overlap with other Mimikatz versions is possible)"
-		author = "Florian Roth"
-		reference = "PowerKatz Analysis"
-		date = "2016-02-05"
-		super_rule = 1
-		score = 80
-		hash1 = "c20f30326fcebad25446cf2e267c341ac34664efad5c50ff07f0738ae2390eae"
-		hash2 = "1e67476281c1ec1cf40e17d7fc28a3ab3250b474ef41cb10a72130990f0be6a0"
-		hash3 = "49e7bac7e0db87bf3f0185e9cf51f2539dbc11384fefced465230c4e5bce0872"
-	strings:
-		$s1 = "%3u - Directory '%s' (*.kirbi)" fullword wide
-		$s2 = "%*s  pPublicKey         : " fullword wide
-		$s3 = "ad_hoc_network_formed" fullword wide
-		$s4 = "<3 eo.oe ~ ANSSI E>" fullword wide
-		$s5 = "\\*.kirbi" fullword wide
-
-		$c1 = "kuhl_m_lsadump_getUsersAndSamKey ; kull_m_registry_RegOpenKeyEx SAM Accounts (0x%08x)" fullword wide
-		$c2 = "kuhl_m_lsadump_getComputerAndSyskey ; kuhl_m_lsadump_getSyskey KO" fullword wide
-	condition:
-		( uint16(0) == 0x5a4d and filesize < 1000KB and 1 of them ) or 2 of them
-}
-
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_FinFisher_.yar*/
 /*
     This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
 
@@ -2554,75 +2509,41 @@ rule FinSpy
         (8 of ($password*) or any of ($screenrec*) or $micrec or any of ($skyperec*) or $driver or any of ($janedow*) or any of ($bootkit*) or $typo1 or $mssounddx) and not any of ($filter*)
 }
 
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Mandibule.yar*/
-/* 		Yara rule to detect ELF Linux process injector toolkit "mandibule" generic.
-   		name: TOOLKIT_Mandibule.yar analyzed by unixfreaxjp. 
-		result:
-		TOOLKIT_Mandibule ./mandibule//mandibule-dynx86-stripped
-		TOOLKIT_Mandibule ./mandibule//mandibule-dynx86-UNstripped
-		TOOLKIT_Mandibule ./mandibule//mandibule-dun64-UNstripped
-		TOOLKIT_Mandibule ./mandibule//mandibule-dyn64-stripped
-
-   		This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) 
-   		and  open to any user or organization, as long as you use it under this license.
+/*
+    This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
 */
 
-private rule is__str_mandibule_gen1 {
+/*
+	Yara Rule Set
+	Author: Florian Roth
+	Date: 2016-02-05
+	Identifier: Powerkatz
+*/
+
+rule Powerkatz_DLL_Generic {
 	meta:
-		author = "unixfreaxjp"
-		date = "2018-05-31"
+		description = "Detects Powerkatz - a Mimikatz version prepared to run in memory via Powershell (overlap with other Mimikatz versions is possible)"
+		author = "Florian Roth"
+		reference = "PowerKatz Analysis"
+		date = "2016-02-05"
+		super_rule = 1
+		score = 80
+		hash1 = "c20f30326fcebad25446cf2e267c341ac34664efad5c50ff07f0738ae2390eae"
+		hash2 = "1e67476281c1ec1cf40e17d7fc28a3ab3250b474ef41cb10a72130990f0be6a0"
+		hash3 = "49e7bac7e0db87bf3f0185e9cf51f2539dbc11384fefced465230c4e5bce0872"
 	strings:
-		$str01 = "shared arguments too big" fullword nocase wide ascii
-		$str02 = "self inject pid: %" fullword nocase wide ascii
-		$str03 = "injected shellcode at 0x%lx" fullword nocase wide ascii        	
-		$str04 = "target pid: %d" fullword nocase wide ascii        	
-		$str05 = "mapping '%s' into memory at 0x%lx" fullword nocase wide ascii
-		$str06 = "shellcode injection addr: 0x%lx" fullword nocase wide ascii
-		$str07 = "loading elf at: 0x%llx" fullword nocase wide ascii
+		$s1 = "%3u - Directory '%s' (*.kirbi)" fullword wide
+		$s2 = "%*s  pPublicKey         : " fullword wide
+		$s3 = "ad_hoc_network_formed" fullword wide
+		$s4 = "<3 eo.oe ~ ANSSI E>" fullword wide
+		$s5 = "\\*.kirbi" fullword wide
+
+		$c1 = "kuhl_m_lsadump_getUsersAndSamKey ; kull_m_registry_RegOpenKeyEx SAM Accounts (0x%08x)" fullword wide
+		$c2 = "kuhl_m_lsadump_getComputerAndSyskey ; kuhl_m_lsadump_getSyskey KO" fullword wide
 	condition:
-                4 of them
+		( uint16(0) == 0x5a4d and filesize < 1000KB and 1 of them ) or 2 of them
 }
 
-private rule is__hex_top_mandibule64 {
-	meta:
-		author = "unixfreaxjp"
-		date = "2018-05-31"
-	strings:
-		$hex01 = { 48 8D 05 43 01 00 00 48 89 E7 FF D0 } // st
-		$hex02 = { 53 48 83 EC 50 48 89 7C 24 08 48 8B 44 24 08 } // mn
-		$hex03 = { 48 81 EC 18 02 00 00 89 7C 24 1C 48 89 74 } // pt
-		$hex04 = { 53 48 81 EC 70 01 01 00 48 89 7C 24 08 48 8D 44 24 20 48 05 00 00 } // ld
-	condition:
-                3 of them 
-}
-
-private rule is__hex_mid_mandibule32 {
-	meta:
-		author = "unixfreaxjp"
-		date = "2018-06-01"
-	strings:
-		$hex05 = { E8 09 07 00 00 81 C1 FC 1F 00 00 8D 81 26 E1 FF FF } // st
-		$hex06 = { 56 53 83 EC 24 E8 E1 05 00 00 81 C3 D0 1E 00 00 8B 44 24 30} // mn
-		$hex07 = { 81 C3 E8 29 00 00 C7 44 24 0C } // pt
-		$hex08 = { E8 C6 D5 FF FF 83 C4 0C 68 00 01 00 00 } // ld
-	condition:
-                3 of them 
-}
-
-rule TOOLKIT_Mandibule {
-	meta:
-		description = "Generic detection for ELF Linux process injector mandibule generic"
-		reference = "https://imgur.com/a/MuHSZtC"
-		author = "unixfreaxjp"
-		org = "MalwareMustDie"
-		date = "2018-06-01"
-	condition:
-		((is__str_mandibule_gen1) or (is__hex_mid_mandibule32))
-		or ((is__str_mandibule_gen1) or (is__hex_top_mandibule64))
-		and is__elf
-		and filesize < 30KB 
-}
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_PassTheHash.yar*/
 /*
     This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
 
@@ -2760,7 +2681,6 @@ rule whosthere : Toolkit  {
 		uint16(0) == 0x5a4d and filesize < 320KB and 2 of them
 }
 
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Powerstager.yar*/
 rule Powerstager
 {
     meta:
@@ -2803,11 +2723,6 @@ rule Powerstager
       (2 of ($decoder_x86*) or 2 of ($decoder_x64*))
 }
 
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Pwdump.yar*/
-/*
-    This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
-
-*/
 rule QuarksPwDump_Gen : Toolkit  {
 	meta:
 		description = "Detects all QuarksPWDump versions"
@@ -2830,7 +2745,6 @@ rule QuarksPwDump_Gen : Toolkit  {
 		all of them
 }
 
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_THOR_HackTools.yar*/
 /*
     This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
 
@@ -5883,7 +5797,6 @@ rule VSSown_VBS {
 		all of them
 }
 
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_Wineggdrop.yar*/
 rule wineggdrop : portscanner toolkit
 {
     meta:
@@ -5894,9 +5807,9 @@ rule wineggdrop : portscanner toolkit
         family = "Hackingtool/Portscanner"
 
     strings:
-        $a = { 54 43 50 20 50 6f 72 74 20 53 63 61 6e 6e 65 72 
-               20 56 3? 2e 3? 20 42 79 20 57 69 6e 45 67 67 44 
-               72 6f 70 0a } 
+        $a = { 54 43 50 20 50 6f 72 74 20 53 63 61 6e 6e 65 72
+               20 56 3? 2e 3? 20 42 79 20 57 69 6e 45 67 67 44
+               72 6f 70 0a }
         $b = "Result.txt"
         $c = "Usage:   %s TCP/SYN StartIP [EndIP] Ports [Threads] [/T(N)] [/(H)Banner] [/Save]\n"
 
@@ -5907,14 +5820,8 @@ rule wineggdrop : portscanner toolkit
         and
 
         //check for wineggdrop specific strings
-        $a and $b and $c 
+        $a and $b and $c
 }
-
-/*https://github.com/Yara-Rules/rules/blob/master/malware/TOOLKIT_exe2hex_payload.yar*/
-/*
-    This Yara ruleset is under the GNU-GPLv2 license (http://www.gnu.org/licenses/gpl-2.0.html) and open to any user or organization, as    long as you use it under this license.
-
-*/
 
 /*
 	Yara Rule Set
@@ -5941,4 +5848,15 @@ rule Payload_Exe2Hex : toolkit {
 		$d2 = "echo+r+cx+%3E%3E" ascii
 	condition:
 		all of ($a*) or all of ($b*) or all of ($c*) or all of ($d*)
+}
+
+
+rule It_is_working
+{
+
+    strings:
+        $a = "Is this working?" nocase
+    
+    condition:
+        $a
 }
