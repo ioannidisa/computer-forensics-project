@@ -7,7 +7,7 @@ Script by: Alexandra Ioannidis and Jathan Anandham
 # Functionality
 We have created a Powershell script that can provide various forensic artifacts relating to processes that can be used in a forensic investigation or for finding anomalous activity within a Windows system. We utilize YARA in relation to rules for Tookits to sort and find anomalies on the Windows System in the directories/files it searches. Our tool creates a .txt report that displays the date, time, computer name, process and service information, as well as a YARA Toolkit analysis of different directories. 
 
-With this script, the user is able to specify if they want the report to be emailed and also if they want the YARA rules to search a specific directory. 
+With this script, the user is able to specify if they want the YARA rules to search a specific directory. 
 
 # Prerequisites
 Powershell must be run as an Admin. 
