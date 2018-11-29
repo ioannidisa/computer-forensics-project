@@ -74,7 +74,7 @@ Get-ChildItem -Recurse -filter *.jpg C:\ 2> $null |
 ForEach-Object { Write-Host -foregroundcolor "green" "Scanning"$_.FullName $_.Name; $jpgCount+=1; $jpg=./yara64.exe -d filename=$_.Name TOOLKIT.yar $_.FullName }
 $jpg | Out-File "$path\$text" -Append
 
-$yarafileCount="`n`nNumber of files scanned for C:\ directory for .exe files: " + $childCount
+$yarafileCount="`n`n`nNumber of files scanned for C:\ directory for .exe files: " + $childCount
 $yarafileCount | Out-File "$path\$text" -Append
 
 $yaradllCount="Number of files scanned for C:\ directory for .dll files: " + $dllCount
